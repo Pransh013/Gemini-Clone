@@ -1,7 +1,6 @@
 import { TriangleDownIcon } from "@radix-ui/react-icons";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ModeToggle } from "../mode-toggle";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Assets } from "../../assets/Assets";
 import {
   Brush,
@@ -12,9 +11,14 @@ import {
   SendHorizontal,
 } from "lucide-react";
 import Suggestions from "./Suggestions";
+import { Context } from "@/contexts/Context";
+import Avataar from "./Avatar";
 
 const Main = () => {
   const [open, setOpen] = useState(false);
+
+  const { recent, showResult, onSent, input, setInput, resultData, loading } =
+    useContext(Context);
 
   const suggestions = [
     {
@@ -75,46 +79,58 @@ const Main = () => {
           </div>
           {/* 393B3D */}
           <div className="flex gap-6 items-center">
-            <Avatar>
-              <AvatarImage src="https://github.com/Pransh013.png" />
-              <AvatarFallback>PV</AvatarFallback>
-            </Avatar>
+            <Avataar />
             <ModeToggle />
           </div>
         </div>
 
         {/* main  */}
         <div className="w-full px-52">
-          <div className="pt-12">
-            <h1
-              className="text-6xl font-medium"
-              style={{
-                background:
-                  "linear-gradient(to right, #4E82EE, #D96570, #D96570)",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Hello Pranshu
-            </h1>
-            <h1 className="text-6xl font-medium text-[#757474] dark:text-[#444746]">
-              How can I help you today?
-            </h1>
-            <div className="flex justify-between pt-20">
-              {suggestions.map((ele, idx) => (
-                <Suggestions icon={ele.src} text={ele.text} key={idx} />
-              ))}
+          {showResult ? (
+            <div>
+              <div className="flex gap-4 items-center">
+                <Avataar />
+                <p>{recent}</p>
+              </div>
+              <div>
+                <img src={Assets.Logo} alt="logo" className="w-8" />
+                <p>{resultData}</p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="pt-12">
+              <h1
+                className="text-6xl font-medium"
+                style={{
+                  background:
+                    "linear-gradient(to right, #4E82EE, #D96570, #D96570)",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Hello Pranshu
+              </h1>
+              <h1 className="text-6xl font-medium text-[#757474] dark:text-[#444746]">
+                How can I help you today?
+              </h1>
+              <div className="flex justify-between pt-20">
+                {suggestions.map((ele, idx) => (
+                  <Suggestions icon={ele.src} text={ele.text} key={idx} />
+                ))}
+              </div>
+            </div>
+          )}
           <div className="mt-32">
             <div className="w-full flex h-16 bg-muted dark:bg-[#1E1F20] gap-5 px-6 items-center rounded-full focus:bg-[#282A2C]">
               <input
                 type="text"
                 placeholder="Enter a prompt here"
                 className="flex-1 h-full rounded-2xl bg-inherit pl-2 outline-none focus:outline-none"
+                onChange={(e) => setInput(e.target.value)}
+                value={input}
               />
               <Images />
-              <SendHorizontal />
+              <SendHorizontal onClick={() => onSent()} />
             </div>
             <p className="text-sm dark:text-[#D2D2D2] text-center mt-3">
               Gemini may display inaccurate info, including about people, so
