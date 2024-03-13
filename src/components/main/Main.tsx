@@ -13,6 +13,26 @@ import {
 import Suggestions from "./Suggestions";
 import { Context } from "@/contexts/Context";
 import Avataar from "./Avatar";
+import Loader from "../Loader";
+
+const suggestions = [
+  {
+    text: "Give me a beginner's guide to an activity",
+    src: <Brush />,
+  },
+  {
+    text: "Help create a weekly meal plan for two",
+    src: <Brush />,
+  },
+  {
+    text: "What's the time it takes to walk to several landmarks",
+    src: <MapPin />,
+  },
+  {
+    text: "Explain what the keto diet is in simple terms",
+    src: <Lightbulb />,
+  },
+];
 
 const Main = () => {
   const [open, setOpen] = useState(false);
@@ -20,28 +40,9 @@ const Main = () => {
   const { recent, showResult, onSent, input, setInput, resultData, loading } =
     useContext(Context);
 
-  const suggestions = [
-    {
-      text: "Give me a beginner's guide to an activity",
-      src: <Brush />,
-    },
-    {
-      text: "Help create a weekly meal plan for two",
-      src: <Brush />,
-    },
-    {
-      text: "What's the time it takes to walk to several landmarks",
-      src: <MapPin />,
-    },
-    {
-      text: "Explain what the keto diet is in simple terms",
-      src: <Lightbulb />,
-    },
-  ];
-
   return (
     <>
-      <div className="w-full h-screen flex-1">
+      <div className="w-full h-screen flex-1 relative overflow-hidden">
         {/* Header  */}
         <div className="flex justify-between py-3.5 px-7">
           <div
@@ -77,7 +78,6 @@ const Main = () => {
               </div>
             )}
           </div>
-          {/* 393B3D */}
           <div className="flex gap-6 items-center">
             <Avataar />
             <ModeToggle />
@@ -85,16 +85,24 @@ const Main = () => {
         </div>
 
         {/* main  */}
-        <div className="w-full px-52">
+        <div className="w-full px-52 h-full">
           {showResult ? (
-            <div>
+            <div className="flex flex-col gap-12 h-3/4 cws overflow-y-scroll">
               <div className="flex gap-4 items-center">
                 <Avataar />
                 <p>{recent}</p>
               </div>
-              <div>
-                <img src={Assets.Logo} alt="logo" className="w-8" />
-                <p>{resultData}</p>
+              <div className="flex items-center gap-4 relative">
+                <img
+                  src={Assets.Logo}
+                  alt="logo"
+                  className="w-8 absolute left-1 top-0.5"
+                />
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <p className="pl-12 pt-2">{resultData}</p>
+                )}
               </div>
             </div>
           ) : (
@@ -120,7 +128,7 @@ const Main = () => {
               </div>
             </div>
           )}
-          <div className="mt-32">
+          <div className="mt-32 w-2/3 absolute bottom-3 left-1/2 -translate-x-1/2">
             <div className="w-full flex h-16 bg-muted dark:bg-[#1E1F20] gap-5 px-6 items-center rounded-full focus:bg-[#282A2C]">
               <input
                 type="text"
