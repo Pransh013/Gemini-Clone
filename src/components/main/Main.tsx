@@ -134,6 +134,7 @@ const Main = () => {
           <div className="w-3/4 xl:w-2/3 absolute bottom-3 left-1/2 -translate-x-1/2">
             <div className="w-full flex h-16 bg-muted dark:bg-[#1E1F20] gap-5 px-6 items-center rounded-full focus:bg-[#282A2C]">
               <input
+                id="chatInput"
                 type="text"
                 placeholder="Enter a prompt here"
                 className="flex-1 h-full rounded-2xl bg-inherit pl-2 outline-none focus:outline-none"

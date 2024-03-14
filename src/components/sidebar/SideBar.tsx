@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Assets } from "../../assets/Assets";
+import { Context } from "@/contexts/Context";
+import Previous from "./Previous";
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const { prevPrompts } = useContext(Context);
   return (
     <>
       <div
@@ -18,40 +21,34 @@ const SideBar = () => {
             onClick={() => setIsOpen(!isOpen)}
           />
           {isOpen ? (
-            <div className="mt-16 -ml-2 rounded-full py-3 px-4 max-w-fit bg-white dark:bg-[#1A1A1C] flex items-center gap-5">
+            <div className="mt-16 cursor-pointer -ml-2 rounded-full py-3 px-4 max-w-fit bg-white dark:bg-[#1A1A1C] flex items-center gap-5">
               <img src={Assets.Plus} alt="" className="dark:invert w-3" />
-              <p className="dark:text-[#666667] text-sm font-semibold">
+              <label
+                htmlFor="chatInput"
+                className="dark:text-[#666667] text-sm font-semibold cursor-pointer"
+              >
                 New Chat
-              </p>
+              </label>
             </div>
           ) : (
-            <div className="mt-16 -ml-2 rounded-full w-12 h-12 bg-white dark:bg-[#1A1A1C] flex justify-center items-center">
-              <img src={Assets.Plus} alt="" className="dark:invert w-3" />
-            </div>
+            <label htmlFor="chatInput">
+              <div className="mt-16 cursor-pointer -ml-2 rounded-full w-12 h-12 bg-white dark:bg-[#1A1A1C] flex justify-center items-center">
+                <img
+                  src={Assets.Plus}
+                  alt=""
+                  className="dark:invert w-3 cursor-pointer"
+                />
+              </div>
+            </label>
           )}
           {isOpen && (
             <div className="mt-5 flex flex-col gap-4">
-              <p className="font-semibold">Recent</p>
-              <div className="flex items-center gap-4">
-                <img
-                  src={Assets.Message}
-                  alt=""
-                  className="dark:invert brightness-110 w-7"
-                />
-                <p className="text-sm font-medium dark:text-[#d2d2d2]">
-                  What is React...
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
-                <img
-                  src={Assets.Message}
-                  alt=""
-                  className="dark:invert brightness-110 w-7"
-                />
-                <p className="text-sm font-medium dark:text-[#d2d2d2]">
-                  What is React...
-                </p>
-              </div>
+              <p className="font-semibold dark:text-primary text-black">
+                Recent
+              </p>
+              {prevPrompts.map((prevPrompt) => (
+                <Previous prevPrompt={prevPrompt} />
+              ))}
             </div>
           )}
         </div>

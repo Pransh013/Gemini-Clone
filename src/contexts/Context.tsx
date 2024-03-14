@@ -14,15 +14,6 @@ type StateType = {
   resultData: string;
 };
 
-export const Response = {
-  id: "",
-  name: "",
-  email: "",
-  username: "",
-  imageUrl: "",
-  bio: "",
-};
-
 const State = {
   onSent: async () => {},
   recent: "",
@@ -53,7 +44,7 @@ export const ContextProvider = ({
   const typingEffect = (idx: number, next: string) => {
     setTimeout(() => {
       setResultData((prev) => prev + next);
-    }, 25 * idx);
+    }, 15 * idx);
   };
 
   const onSent = async () => {
@@ -61,6 +52,7 @@ export const ContextProvider = ({
     setLoading(true);
     setShowResult(true);
     setRecent(input);
+    setPrevPrompts(prev => [...prev, input]);
     const response = await runChat(input);
     let resArray = response.split("**");
     let newRes: string = "";
